@@ -713,7 +713,7 @@
 					Position = dim2(0.5, 0, 0, 2),
 						BorderSizePixel = 0,
 						AutomaticSize = Enum.AutomaticSize.XY,
-						TextSize = 14,
+						TextSize = 16,
 						BackgroundColor3 = rgb(255, 255, 255)
 					}) library:apply_theme(items.text, "accent", "TextColor3")
 
