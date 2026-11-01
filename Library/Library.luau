@@ -63,7 +63,7 @@
 	local concat = table.concat
 
 	local library = {
-		directory = "Atlanta",
+		directory = "Equinox",
 		folders = {
 			"/fonts",
 			"/configs",
@@ -1334,10 +1334,10 @@
 					PaddingLeft = dim(0, 5)
 				})
 
-				local window_size = (properties and properties.size) or dim2(0, 755, 0, 450)
+				local window_size = dim2(0, 755, 0, 450)
 				local window_position = (properties and properties.position) or dim2(0, (camera.ViewportSize.X / 2) - (window_size.X.Offset / 2), 0, (camera.ViewportSize.Y / 2) - (window_size.Y.Offset / 2))
 				local main_window = library:panel({
-					name = properties and properties.name or "Atlanta | ",
+					name = properties and properties.name or "Equinox | ",
 					size = window_size,
 					position = window_position,
 					image = "rbxassetid://98823308062942",
@@ -1432,11 +1432,11 @@
 				library:apply_theme(UIGradient, "contrast", "Color")
 				library:make_resizable(items.main_holder)
 
-				window.watermark = library:watermark({default = os.date('Atlanta |  - %b %d %Y - %H:%M:%S')})
+				window.watermark = library:watermark({default = os.date('Equinox |  - %b %d %Y - %H:%M:%S')})
 
 				task.spawn(function()
 					while task.wait(1) do
-						window.watermark.change_text(os.date('Atlanta - Beta - %b %d %Y - %H:%M:%S'))
+						window.watermark.change_text(os.date('Equinox - Beta - %b %d %Y - %H:%M:%S'))
 					end
 				end)
 
@@ -1611,20 +1611,64 @@
 					return tab
 				end
 
+				function window:esp_preview(options)
+					options = options or {}
+
+					if window.esp_tab then
+						return window.esp_section
+					end
+
+					local tab = window:tab({name = options.tab or "ESP Preview"})
+					local column = tab:column()
+					local section = column:section({name = options.section or "Preview"})
+					local preview_holder
+
+					section:toggle({
+						name = options.toggle_name or "Preview",
+						flag = options.flag or "esp_preview",
+						default = options.default ~= false,
+						callback = function(bool)
+							if preview_holder then
+								preview_holder.Visible = bool
+							end
+						end
+					})
+
+					preview_holder = library:create("Frame", {
+						Parent = section.holder,
+						Name = "",
+						BackgroundTransparency = 1,
+						Size = dim2(1, 0, 0, 0),
+						AutomaticSize = Enum.AutomaticSize.Y,
+						BorderSizePixel = 0,
+						Visible = options.default ~= false,
+						BackgroundColor3 = rgb(255, 255, 255),
+					})
+
+					local viewport = setmetatable({holder = preview_holder}, library)
+
+					section.preview_holder = preview_holder
+					section.tab = tab
+					section.viewport = viewport
+
+					section.esp_preview = function(self, properties)
+						return library.esp_preview(viewport, properties)
+					end
+
+					section.set_visible = function(bool)
+						preview_holder.Visible = bool and true or false
+					end
+
+					window.esp_tab = tab
+					window.esp_section = section
+
+					return section
+				end
+
 				setmetatable(window, {
 					__index = function(self, key)
 						if key == "esp_section" then
-							local esp_panel = library:panel({
-								name = "ESP Preview",
-								size = dim2(0, 300, 0, 325),
-								position = dim2(0, items.main_holder.AbsolutePosition.X - 306, 0, items.main_holder.AbsolutePosition.Y),
-							})
-
-							local column = setmetatable(esp_panel.items, library):column()
-							local section = column:section({name = "Preview"})
-
-							rawset(self, "esp_section", section)
-							return section
+							return window:esp_preview()
 						end
 
 						return library[key]
@@ -1636,7 +1680,7 @@
 
 		function library:watermark(options)
 			local cfg = {
-				default = options.text or options.default or os.date('drain.lol | %b %d %Y | %H:%M')
+				default = options.text or options.default or os.date('Equinox | %b %d %Y | %H:%M')
 			}
 
 			local watermark_outline = library:create("Frame", {
@@ -1689,7 +1733,7 @@
 				FontFace = library.font,
 				TextColor3 = themes.preset.text,
 				BorderColor3 = rgb(0, 0, 0),
-				Text = "  drain.lol | Beta | Aug 29 2024 | 07:29:00  ",
+				Text = "  Equinox | Beta | Aug 29 2024 | 07:29:00  ",
 				Size = dim2(0, 0, 1, 0),
 				BackgroundTransparency = 1,
 				Position = dim2(0, -1, 0, 1),
