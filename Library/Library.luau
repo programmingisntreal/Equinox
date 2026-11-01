@@ -709,10 +709,11 @@
 						BorderColor3 = rgb(0, 0, 0),
 						Text = cfg.name,
 						BackgroundTransparency = 1,
-						Position = dim2(0, 2, 0, 4),
+					AnchorPoint = vec2(0.5, 0),
+					Position = dim2(0.5, 0, 0, 2),
 						BorderSizePixel = 0,
 						AutomaticSize = Enum.AutomaticSize.XY,
-						TextSize = 12,
+						TextSize = 14,
 						BackgroundColor3 = rgb(255, 255, 255)
 					}) library:apply_theme(items.text, "accent", "TextColor3")
 
@@ -733,9 +734,9 @@
 					items.outline = library:create("Frame", {
 						Parent = items.window_holder,
 						Name = "",
-						Position = dim2(0, 0, 0, 18),
+						Position = dim2(0, 0, 0, 20),
 						BorderColor3 = rgb(0, 0, 0),
-						Size = dim2(1, 0, 1, -18),
+						Size = dim2(1, 0, 1, -20),
 						BorderSizePixel = 0,
 						BackgroundColor3 = themes.preset.inline
 					})
@@ -1321,7 +1322,7 @@
 					PaddingLeft = dim(0, 5)
 				})
 
-				local window_size = dim2(0, 755, 0, 450)
+				local window_size = dim2(0, 755, 0, 555)
 				local window_position = (properties and properties.position) or dim2(0, (camera.ViewportSize.X / 2) - (window_size.X.Offset / 2), 0, (camera.ViewportSize.Y / 2) - (window_size.Y.Offset / 2))
 				local main_window = library:panel({
 					name = properties and properties.name or "Equinox | ",
