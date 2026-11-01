@@ -63,7 +63,7 @@
 	local concat = table.concat
 
 	local library = {
-		directory = "Equinox",
+		directory = "Sinner",
 		folders = {
 			"/fonts",
 			"/configs",
