@@ -98,11 +98,11 @@
 
 	local themes = {
 		preset = {
-			["outline"] = hex("#0A0A0A"),
-			["inline"] = hex("#2D2D2D"),
+			["outline"] = hex("#000000"),
+			["inline"] = hex("#141414"),
 			["accent"] = hex("#FFFFFF"),
-			["high_contrast"] = hex("#141414"),
-			["low_contrast"] = hex("#1E1E1E"),
+			["high_contrast"] = hex("#0A0A0A"),
+			["low_contrast"] = hex("#111111"),
 			["text"] = hex("#B4B4B4"),
 			["text_outline"] = rgb(0, 0, 0),
 			["glow"] = hex("#FFFFFF"),
@@ -589,7 +589,7 @@
 				local UIGradient = library:create("UIGradient", {
 					Parent = watermark_background,
 					Name = "",
-					Color = rgbseq{rgbkey(0, rgb(41, 41, 55)), rgbkey(1, rgb(35, 35, 47))}
+					Color = rgbseq{rgbkey(0, rgb(16, 16, 16)), rgbkey(1, rgb(7, 7, 7))}
 				}); library:apply_theme(UIGradient, "contrast", "Color")
 
 				local text = library:create("TextLabel", {
@@ -667,35 +667,6 @@
 					library:draggify(items.main_holder)
 					library:make_resizable(items.main_holder)
 
-					local Close = library:create( "TextButton" , {
-						Parent = items.main_holder;
-						FontFace = library.font;
-						Name = "\0";
-						AnchorPoint = vec2(1, 0);
-						Active = false;
-						BorderColor3 = rgb(0, 0, 0);
-						Text = "X";
-						Size = dim2(0, 0, 0, 0);
-						Selectable = false;
-						Position = dim2(1, -7, 0, 5);
-						BorderSizePixel = 0;
-						BackgroundTransparency = 1;
-						TextXAlignment = Enum.TextXAlignment.Right;
-						AutomaticSize = Enum.AutomaticSize.XY;
-						TextColor3 = themes.preset.text;
-						TextSize = 12;
-						ZIndex = 100;
-						BackgroundColor3 = rgb(255, 255, 255)
-					});
-
-					library:create( "UIStroke" , {
-						Parent = Close
-					});
-
-					Close.MouseButton1Click:Connect(function()
-						items.sgui.Enabled = false;
-					end)
-
 					items.window_inline = library:create("Frame", {
 						Parent = items.main_holder,
 						Name = "",
@@ -723,8 +694,8 @@
 						Name = "",
 						Rotation = 90,
 						Color = rgbseq{
-						rgbkey(0, rgb(41, 41, 55)),
-						rgbkey(1, rgb(35, 35, 47))
+						rgbkey(0, rgb(16, 16, 16)),
+						rgbkey(1, rgb(7, 7, 7))
 					}
 					})
 
@@ -798,8 +769,8 @@
 						Name = "",
 						Rotation = 90,
 						Color = rgbseq{
-							rgbkey(0, rgb(41, 41, 55)),
-							rgbkey(1, rgb(35, 35, 47))
+							rgbkey(0, rgb(16, 16, 16)),
+							rgbkey(1, rgb(7, 7, 7))
 						}
 					})
 
@@ -1183,6 +1154,22 @@
 				end
 			end
 
+			window.toggle_key = (properties and properties.toggle_key) or Enum.KeyCode.RightShift
+
+			function window:set_visible(bool)
+				window.set_menu_visibility(bool and true or false)
+			end
+
+			library:connection(uis.InputBegan, function(input, game_processed)
+				if game_processed then
+					return
+				end
+
+				if input.KeyCode == window.toggle_key then
+					window.set_menu_visibility(not window.opened)
+				end
+			end)
+
 				local outline = library:create("Frame", {
 					Parent = sgui,
 					Name = "",
@@ -1424,8 +1411,8 @@
 					Parent = background,
 					Rotation = 90,
 					Color = rgbseq{
-						rgbkey(0, rgb(41, 41, 55)),
-						rgbkey(1, rgb(35, 35, 47))
+						rgbkey(0, rgb(16, 16, 16)),
+						rgbkey(1, rgb(7, 7, 7))
 					}
 				})
 
@@ -1722,8 +1709,8 @@
 				Name = "",
 				Rotation = 90,
 				Color = rgbseq{
-					rgbkey(0, rgb(41, 41, 55)),
-					rgbkey(1, rgb(35, 35, 47))
+					rgbkey(0, rgb(16, 16, 16)),
+					rgbkey(1, rgb(7, 7, 7))
 				}
 			}) library:apply_theme(UIGradient, "contrast", "Color")
 
@@ -2382,7 +2369,7 @@
 				local UIGradient = library:create("UIGradient", {
 					Parent = background,
 					Rotation = 90,
-					Color = rgbseq{rgbkey(0, rgb(41, 41, 55)), rgbkey(1, rgb(35, 35, 47))}
+					Color = rgbseq{rgbkey(0, rgb(16, 16, 16)), rgbkey(1, rgb(7, 7, 7))}
 				}) library:apply_theme(UIGradient, "contrast", "Color")
 
 				local text = library:create("TextLabel", {
@@ -2497,6 +2484,8 @@
 				sections = {},
 			}
 
+			local tab_count = #cfg.names
+
 			local section = library:create("Frame", {
 				Parent = self.holder,
 				Name = "",
@@ -2549,7 +2538,7 @@
 				Parent = __background,
 				Name = "",
 				Rotation = 90,
-				Color = rgbseq{rgbkey(0, rgb(41, 41, 55)), rgbkey(1, rgb(35, 35, 47))}
+				Color = rgbseq{rgbkey(0, rgb(16, 16, 16)), rgbkey(1, rgb(7, 7, 7))}
 			}) library:apply_theme(UIGradient, "contrast", "Color")
 
 			local tab_holder = library:create("Frame", {
@@ -2568,7 +2557,7 @@
 				Parent = tab_holder,
 				Name = "",
 				FillDirection = Enum.FillDirection.Horizontal,
-				HorizontalFlex = Enum.UIFlexAlignment.Fill,
+				HorizontalFlex = Enum.UIFlexAlignment.None,
 				Padding = dim(0, -3),
 				SortOrder = Enum.SortOrder.LayoutOrder
 			})
@@ -2587,7 +2576,7 @@
 						BorderColor3 = rgb(0, 0, 0),
 						Text = "",
 						BorderSizePixel = 0,
-						Size = dim2(0, 0, 1, 0),
+						Size = dim2(1 / tab_count, -3, 1, 0),
 						ZIndex = 1,
 						TextSize = 12,
 						BackgroundColor3 = themes.preset.outline
@@ -2608,7 +2597,7 @@
 						Parent = background,
 						Name = "",
 						Rotation = 90,
-						Color = rgbseq{rgbkey(0, rgb(41, 41, 55)), rgbkey(1, rgb(35, 35, 47))}
+						Color = rgbseq{rgbkey(0, rgb(16, 16, 16)), rgbkey(1, rgb(7, 7, 7))}
 					}) library:apply_theme(UIGradient, "contrast", "Color")
 
 					local text = library:create("TextLabel", {
@@ -2619,6 +2608,8 @@
 						BorderColor3 = rgb(0, 0, 0),
 						Text = tab,
 						BackgroundTransparency = 1,
+						AnchorPoint = vec2(0.5, 0),
+						Position = dim2(0.5, 0, 0, 0),
 						Size = dim2(1, 0, 1, 0),
 						BorderSizePixel = 0,
 						AutomaticSize = Enum.AutomaticSize.X,
@@ -2679,7 +2670,7 @@
 				function multi:open_tab(bool)
 					ScrollingFrame.Visible = bool
 					UIGradient.Rotation = bool and -90 or 90
-					tabb.Size = dim2(0, 0, 1, bool and 1 or 0)
+					tabb.Size = dim2(1 / tab_count, -3, 1, bool and 1 or 0)
 					text.TextColor3 = bool and themes.preset.accent or themes.preset.text
 				end
 
@@ -2781,8 +2772,8 @@
 				Parent = background,
 				Rotation = 90,
 				Color = rgbseq{
-					rgbkey(0, rgb(41, 41, 55)),
-					rgbkey(1, rgb(35, 35, 47))
+					rgbkey(0, rgb(16, 16, 16)),
+					rgbkey(1, rgb(7, 7, 7))
 				}
 			}) library:apply_theme(UIGradient, "contrast", "Color")
 
@@ -3003,8 +2994,8 @@
 					Parent = contrast,
 					Rotation = 90,
 					Color = rgbseq{
-						rgbkey(0, rgb(41, 41, 55)),
-						rgbkey(1, rgb(35, 35, 47))
+						rgbkey(0, rgb(16, 16, 16)),
+						rgbkey(1, rgb(7, 7, 7))
 					}
 				}); library:apply_theme(UIGradient, "contrast", "Color")
 
@@ -3238,8 +3229,8 @@
 					Rotation = 90,
 					Name = "_",
 					Color = rgbseq{
-						rgbkey(0, rgb(41, 41, 55)),
-						rgbkey(1, rgb(35, 35, 47))
+						rgbkey(0, rgb(16, 16, 16)),
+						rgbkey(1, rgb(7, 7, 7))
 					}
 				}) library:apply_theme(UIGradient, "contrast", "Color")
 
@@ -3384,8 +3375,8 @@
 					Rotation = 90,
 					Name = "_",
 					Color = rgbseq{
-					rgbkey(0, rgb(41, 41, 55)),
-					rgbkey(1, rgb(35, 35, 47))
+					rgbkey(0, rgb(16, 16, 16)),
+					rgbkey(1, rgb(7, 7, 7))
 				}
 				}) library:apply_theme(UIGradient, "contrast", "Color")
 
@@ -3484,8 +3475,8 @@
 					Rotation = 90,
 					Name = "_",
 					Color = rgbseq{
-						rgbkey(0, rgb(41, 41, 55)),
-						rgbkey(1, rgb(35, 35, 47))
+						rgbkey(0, rgb(16, 16, 16)),
+						rgbkey(1, rgb(7, 7, 7))
 					}
 				}) library:apply_theme(UIGradient, "contrast", "Color")
 
@@ -3948,8 +3939,8 @@
 				Name = "",
 				Rotation = 90,
 				Color = rgbseq{
-					rgbkey(0, rgb(41, 41, 55)),
-					rgbkey(1, rgb(35, 35, 47))
+					rgbkey(0, rgb(16, 16, 16)),
+					rgbkey(1, rgb(7, 7, 7))
 				}
 			}); library:apply_theme(UIGradient, "contrast", "Color")
 
@@ -4072,8 +4063,8 @@
 					Name = "",
 					Rotation = 90,
 					Color = rgbseq{
-						rgbkey(0, rgb(41, 41, 55)),
-						rgbkey(1, rgb(35, 35, 47))
+						rgbkey(0, rgb(16, 16, 16)),
+						rgbkey(1, rgb(7, 7, 7))
 					}
 				}); library:apply_theme(UIGradient, "contrast", "Color")
 
@@ -4475,8 +4466,8 @@
 					Parent = contrast,
 					Rotation = 90,
 					Color = rgbseq{
-						rgbkey(0, rgb(41, 41, 55)),
-						rgbkey(1, rgb(35, 35, 47))
+						rgbkey(0, rgb(16, 16, 16)),
+						rgbkey(1, rgb(7, 7, 7))
 					}
 				}) library:apply_theme(UIGradient, "contrast", "Color")
 
@@ -4580,8 +4571,8 @@
 					Parent = contrast,
 					Rotation = 90,
 					Color = rgbseq{
-						rgbkey(0, rgb(41, 41, 55)),
-						rgbkey(1, rgb(35, 35, 47))
+						rgbkey(0, rgb(16, 16, 16)),
+						rgbkey(1, rgb(7, 7, 7))
 					}
 				}) library:apply_theme(UIGradient, "contrast", "Color")
 
@@ -4839,8 +4830,8 @@
 					Name = "",
 					Rotation = 90,
 					Color = rgbseq{
-					rgbkey(0, rgb(41, 41, 55)),
-					rgbkey(1, rgb(35, 35, 47))
+					rgbkey(0, rgb(16, 16, 16)),
+					rgbkey(1, rgb(7, 7, 7))
 				}
 				}) library:apply_theme(UIGradient, "contrast", "Color")
 
@@ -5089,8 +5080,8 @@
 					Name = "",
 					Rotation = 90,
 					Color = rgbseq{
-						rgbkey(0, rgb(41, 41, 55)),
-						rgbkey(1, rgb(35, 35, 47))
+						rgbkey(0, rgb(16, 16, 16)),
+						rgbkey(1, rgb(7, 7, 7))
 					}
 				})
 
@@ -5257,8 +5248,8 @@
 				Name = "",
 				Rotation = 90,
 				Color = rgbseq{
-					rgbkey(0, rgb(41, 41, 55)),
-					rgbkey(1, rgb(35, 35, 47))
+					rgbkey(0, rgb(16, 16, 16)),
+					rgbkey(1, rgb(7, 7, 7))
 				}
 			})
 
@@ -5499,8 +5490,8 @@
 					Name = "",
 					Rotation = 90,
 					Color = rgbseq{
-					rgbkey(0, rgb(41, 41, 55)),
-					rgbkey(1, rgb(35, 35, 47))
+					rgbkey(0, rgb(16, 16, 16)),
+					rgbkey(1, rgb(7, 7, 7))
 				}
 				}); library:apply_theme(UIGradient, "contrast", "Color")
 
