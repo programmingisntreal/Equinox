@@ -1432,7 +1432,7 @@
 						return window.style_tab
 					end
 
-					local style = window:tab({name = "Style"})
+					local style = window:tab({name = "Style", columns = 1})
 					window.style_tab = style
 
 					local column = style:column()
@@ -1526,7 +1526,7 @@
 						return window.configs_tab
 					end
 
-					local config_tab = window:tab({name = "Configurations"})
+					local config_tab = window:tab({name = "Configurations", columns = 1})
 					window.configs_tab = config_tab
 
 					getgenv().load_config = function(name)
@@ -1585,7 +1585,7 @@
 						return window.playerlist_tab
 					end
 
-					local tab = window:tab({name = "Playerlist"})
+					local tab = window:tab({name = "Playerlist", columns = 1})
 					window.playerlist_tab = tab
 
 					local column = tab:column()
@@ -1605,7 +1605,7 @@
 						return window.esp_section
 					end
 
-					local tab = window:tab({name = options.tab or "ESP Preview"})
+					local tab = window:tab({name = options.tab or "ESP Preview", columns = 1})
 					local column = tab:column()
 					local section = column:section({name = options.section or "Preview"})
 					local preview_holder
@@ -2402,15 +2402,52 @@
 					BackgroundColor3 = rgb(255, 255, 255)
 				})
 
-				cfg["holder"] = section_holder
-
 				library:create("UIListLayout", {
 					Parent = section_holder,
 					FillDirection = Enum.FillDirection.Horizontal,
-					HorizontalFlex = Enum.UIFlexAlignment.Fill,
-					Padding = dim(0, 4),
+					HorizontalFlex = Enum.UIFlexAlignment.None,
+					Padding = dim(0, 2),
 					SortOrder = Enum.SortOrder.LayoutOrder
 				})
+
+				local column_names = options.columns == 1 and {"full"} or {"left", "center", "right"}
+				local column_width = 1 / #column_names
+				local tab_columns = {}
+
+				for _, column_name in next, column_names do
+					local column_frame = library:create("Frame", {
+						Parent = section_holder,
+						Name = column_name,
+						BackgroundTransparency = 1,
+						BorderColor3 = rgb(0, 0, 0),
+						Size = dim2(column_width, -3, 1, 0),
+						BorderSizePixel = 0,
+						BackgroundColor3 = rgb(255, 255, 255)
+					})
+
+					library:create("UIListLayout", {
+						Parent = column_frame,
+						Padding = dim(0, 4),
+						SortOrder = Enum.SortOrder.LayoutOrder,
+						VerticalFlex = Enum.UIFlexAlignment.Fill
+					})
+
+					tab_columns[column_name] = setmetatable({
+						name = column_name,
+						holder = column_frame,
+					}, library)
+				end
+
+				local default_column = tab_columns[column_names[1]]
+
+				cfg.is_tab = true
+				cfg.columns = tab_columns
+				cfg.column_order = column_names
+				cfg.column_index = 0
+				cfg.left = tab_columns.left or default_column
+				cfg.center = tab_columns.center or default_column
+				cfg.right = tab_columns.right or default_column
+				cfg.holder = default_column.holder
 
 			function cfg.open_tab()
 				if library.current_tab and library.current_tab[1] ~= background then
@@ -2452,6 +2489,17 @@
 		end
 
 		function library:column(path)
+			if self.is_tab then
+				if type(path) == "string" then
+					return self.columns[path] or self.columns[self.column_order[1]]
+				end
+
+				self.column_index = self.column_index + 1
+
+				return self.columns[self.column_order[min(self.column_index, #self.column_order)]]
+			end
+
+
 			local cfg = {}
 
 			local holder = path or self.holder
