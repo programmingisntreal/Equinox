@@ -1110,7 +1110,7 @@
 			local blur = library:create( "BlurEffect" , {
 				Parent = lighting;
 				Enabled = true;
-				Size = 15
+				Size = 0
 			});
 
 			library.cache = library:create("ScreenGui", {
@@ -1136,7 +1136,7 @@
 					end
 				end
 
-				library:tween(blur, {Size = bool and (flags["Blur Size"] or 15) or 0})
+				library:tween(blur, {Size = bool and (flags["Blur Size"] or 0) or 0})
 
 				sgui.Enabled = true
 				notif_holder.Enabled = true
@@ -1479,7 +1479,7 @@
 					:colorpicker({name = "Glow", color = themes.preset.glow, callback = function(color, alpha)
 						library:update_theme("glow", color)
 					end, flag = "Glow"})
-					section:slider({name = "Blur Size", flag = "Blur Size", min = 0, max = 56, default = 15, interval = 1, callback = function(int)
+					section:slider({name = "Blur Size", flag = "Blur Size", min = 0, max = 56, default = 0, interval = 1, callback = function(int)
 						if window.opened then
 							blur.Size = int
 						end
@@ -2527,10 +2527,15 @@
 		end
 
 		function library:multi_section(options)
+			local names = options.names or {"First", "Second", "Third"}
 			local cfg = {
-				names = options.names or {"First", "Second", "Third"},
+				names = {},
 				sections = {},
 			}
+
+			for index = 1, min(#names, 3) do
+				cfg.names[index] = names[index]
+			end
 
 			local tab_count = #cfg.names
 
