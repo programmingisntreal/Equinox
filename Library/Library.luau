@@ -2327,7 +2327,6 @@
 			local cfg = {
 				name = options.name or "tab",
 				enabled = false,
-				is_tab = true,
 			}
 
 				local tab_holder = library:create("TextButton", {
@@ -2436,14 +2435,6 @@
 
 				library.current_tab[2].Visible = true
 
-				for _, frame in next, library.current_tab[2]:GetDescendants() do
-					if frame:IsA("ScrollingFrame") then
-						local automatic = frame.AutomaticCanvasSize
-						frame.AutomaticCanvasSize = Enum.AutomaticSize.None
-						frame.AutomaticCanvasSize = automatic
-					end
-				end
-
 				if library.current_element_open and library.current_element_open ~= cfg then
 					library.current_element_open.set_visible(false)
 					library.current_element_open.open = false
@@ -2458,18 +2449,6 @@
 			end
 
 			return setmetatable(cfg, library)
-		end
-
-		function library:get_holder()
-			if self.is_tab then
-				if not self.auto_column then
-					self.auto_column = library.column(self, self.holder)
-				end
-
-				return self.auto_column.holder
-			end
-
-			return self.holder
 		end
 
 		function library:column(path)
@@ -2508,7 +2487,7 @@
 			local tab_count = #cfg.names
 
 			local section = library:create("Frame", {
-				Parent = self:get_holder(),
+				Parent = self.holder,
 				Name = "",
 				BorderColor3 = rgb(0, 0, 0),
 				Size = dim2(1, 0, 1, 0),
@@ -2723,7 +2702,7 @@
 			}
 
 			local section = library:create("Frame", {
-				Parent = self:get_holder(),
+				Parent = self.holder,
 				Name = "\0",
 				BorderColor3 = rgb(0, 0, 0),
 				Size = dim2(1, 0, 1, 0),
