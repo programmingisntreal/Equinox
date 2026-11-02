@@ -1420,11 +1420,109 @@
 				library:apply_theme(UIGradient, "contrast", "Color")
 				library:make_resizable(items.main_holder)
 
+				local weekday_names = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"}
+				local month_names = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"}
+
+				local function ordinal(number)
+					if number % 10 == 1 and number % 100 ~= 11 then
+						return "st"
+					elseif number % 10 == 2 and number % 100 ~= 12 then
+						return "nd"
+					elseif number % 10 == 3 and number % 100 ~= 13 then
+						return "rd"
+					end
+
+					return "th"
+				end
+
+				local function time_string()
+					local current = os.date("*t", os.time())
+					local hour = current.hour
+					local suffix = "AM"
+
+					if hour >= 12 then
+						suffix = "PM"
+					end
+
+					if hour == 0 then
+						hour = 12
+					elseif hour > 12 then
+						hour = hour - 12
+					end
+
+					return string.format("%02d:%02d:%02d %s", hour, current.min, current.sec, suffix)
+				end
+
+				local current_date = {Day = 1, Month = 1, Year = 2025, DayOfWeek = 1}
+
+				task.spawn(function()
+					local success, response = pcall(function()
+						return game:HttpGet("https://worldtimeapi.org/api/ip")
+					end)
+
+					local parsed = false
+
+					if success and type(response) == "string" then
+						local weekday = tonumber(response:match('"day_of_week":(%d+)'))
+						local day = tonumber(response:match('"day_of_month":(%d+)'))
+						local month = tonumber(response:match('"month":(%d+)'))
+						local year = tonumber(response:match('"year":(%d+)'))
+
+						if day and month and year then
+							current_date.Day = day
+							current_date.Month = month
+							current_date.Year = year
+							current_date.DayOfWeek = (weekday or 1) + 1
+
+							if current_date.DayOfWeek > 7 then
+								current_date.DayOfWeek = current_date.DayOfWeek - 7
+							end
+
+							parsed = true
+						end
+					end
+
+					if not parsed then
+						local now = os.date("*t", os.time())
+
+						current_date.Day = now.day
+						current_date.Month = now.month
+						current_date.Year = now.year
+						current_date.DayOfWeek = now.wday
+					end
+				end)
+
+				local function date_string()
+					local weekday = weekday_names[current_date.DayOfWeek] or "Monday"
+					local month = month_names[current_date.Month] or "January"
+
+					return weekday .. ", " .. current_date.Day .. ordinal(current_date.Day) .. " " .. month
+				end
+
+				local watermark_fps = 0
+				local watermark_frames = 0
+				local watermark_clock = tick()
+
+				library:connection(run.RenderStepped, function()
+					watermark_frames = watermark_frames + 1
+
+					if (tick() - watermark_clock) >= 1 then
+						watermark_fps = watermark_frames
+						watermark_clock = tick()
+						watermark_frames = 0
+					end
+				end)
+
 				window.watermark = library:watermark({
-					text = os.date('Equinox |  - %b %d %Y - %H:%M:%S'),
-					interval = 1,
+					text = "Sinner",
+					interval = 0.2,
 					update = function()
-						return os.date('Equinox - Beta - %b %d %Y - %H:%M:%S')
+						return ("Sinner | %s fps | %s ms | %s | %s"):format(
+							math.floor(watermark_fps),
+							math.floor(stats.Network.ServerStatsItem['Data Ping']:GetValue()),
+							time_string(),
+							date_string()
+						)
 					end,
 				})
 
