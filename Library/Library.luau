@@ -63,7 +63,7 @@
 	local concat = table.concat
 
 	local library = {
-		directory = "Sinner",
+		directory = "Equinox",
 		folders = {
 			"/fonts",
 			"/configs",
@@ -713,7 +713,7 @@
 					Position = dim2(0.5, 0, 0, 2),
 						BorderSizePixel = 0,
 						AutomaticSize = Enum.AutomaticSize.XY,
-						TextSize = 16,
+						TextSize = 14,
 						BackgroundColor3 = rgb(255, 255, 255)
 					}) library:apply_theme(items.text, "accent", "TextColor3")
 
@@ -1420,13 +1420,17 @@
 				library:apply_theme(UIGradient, "contrast", "Color")
 				library:make_resizable(items.main_holder)
 
-				window.watermark = library:watermark({default = os.date('Equinox |  - %b %d %Y - %H:%M:%S')})
+				window.watermark = library:watermark({
+					text = os.date('Equinox |  - %b %d %Y - %H:%M:%S'),
+					interval = 1,
+					update = function()
+						return os.date('Equinox - Beta - %b %d %Y - %H:%M:%S')
+					end,
+				})
 
-				task.spawn(function()
-					while task.wait(1) do
-						window.watermark.change_text(os.date('Equinox - Beta - %b %d %Y - %H:%M:%S'))
-					end
-				end)
+				function window:set_watermark(options)
+					return window.watermark.configure(options)
+				end
 
 				function window:style()
 					if window.style_tab then
@@ -1668,15 +1672,18 @@
 
 		function library:watermark(options)
 			local cfg = {
-				default = options.text or options.default or os.date('Equinox | %b %d %Y | %H:%M')
+				default = options.text or options.default or os.date('Equinox | %b %d %Y | %H:%M'),
+				visible = options.visible ~= false,
+				interval = options.interval or 1,
+				update = options.update,
 			}
 
 			local watermark_outline = library:create("Frame", {
 				Parent = sgui,
 				Name = "",
 				BorderColor3 = rgb(0, 0, 0),
-				AnchorPoint = vec2(1, 1),
-				Position = dim2(1, -20, 0, 20),
+				AnchorPoint = options.anchor_point or vec2(1, 1),
+				Position = options.position or dim2(1, -20, 0, 20),
 				Size = dim2(0, 0, 0, 24),
 				BorderSizePixel = 0,
 				AutomaticSize = Enum.AutomaticSize.X,
@@ -1757,18 +1764,91 @@
 				}
 			})
 
+			local updating = false
+
+			local function stop_update()
+				updating = false
+			end
+
+			local function start_update()
+				if updating then
+					return
+				end
+
+				updating = true
+
+				task.spawn(function()
+					while updating do
+						local interval = cfg.interval or 1
+
+						task.wait(interval > 0 and interval or 0.1)
+
+						if updating and cfg.update then
+							local success, value = pcall(cfg.update)
+
+							if success and type(value) == "string" then
+								cfg.change_text(value)
+							end
+						end
+					end
+				end)
+			end
+
 			function cfg.change_text(input)
 				text.Text = "  ".. input .."  "
 			end
+
+			cfg.set_text = cfg.change_text
 
 			function cfg.set_visible(bool)
 				watermark_outline.Visible = bool
 			end
 
+			function cfg.configure(options)
+				options = options or {}
+
+				if options.text ~= nil then
+					cfg.default = options.text
+					cfg.change_text(options.text)
+				end
+
+				if options.visible ~= nil then
+					cfg.set_visible(options.visible)
+				end
+
+				if options.position ~= nil then
+					watermark_outline.Position = options.position
+				end
+
+				if options.anchor_point ~= nil then
+					watermark_outline.AnchorPoint = options.anchor_point
+				end
+
+				if options.update ~= nil then
+					cfg.update = options.update ~= false and options.update or nil
+				end
+
+				if options.interval ~= nil then
+					cfg.interval = options.interval
+				end
+
+				if cfg.update and (cfg.interval or 0) > 0 then
+					start_update()
+				else
+					stop_update()
+				end
+
+				return cfg
+			end
+
 			cfg.change_text(cfg.default)
+			cfg.set_visible(cfg.visible)
+
+			if cfg.update and (cfg.interval or 0) > 0 then
+				start_update()
+			end
 
 			return cfg
-
 		end
 
 		function library:esp_preview(properties)
