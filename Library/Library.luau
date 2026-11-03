@@ -161,7 +161,7 @@
 		[Enum.KeyCode.RightControl] = "RC",
 		[Enum.KeyCode.Insert] = "INS",
 		[Enum.KeyCode.Backspace] = "BS",
-		[Enum.KeyCode.Return] = "ENT",
+		[Enum.KeyCode.Return] = "Ent",
 		[Enum.KeyCode.LeftAlt] = "LA",
 		[Enum.KeyCode.RightAlt] = "RA",
 		[Enum.KeyCode.CapsLock] = "CAPS",
@@ -4346,9 +4346,9 @@
 						flags[cfg.flag]["active"] = __cached
 						cfg.callback(__cached)
 					elseif tostring(input):find("Enum") then
-						input = input.Name == "Escape" and "none" or input
+						input = input.Name == "Escape" and "NONE" or input
 
-						cfg.key = input or "none"
+						cfg.key = input or "NONE"
 
 						local _text = keys[cfg.key] or tostring(cfg.key):gsub("Enum.", "")
 						local _text2 = (tostring(_text):gsub("KeyCode.", ""):gsub("UserInputType.", "")) or "none"
@@ -4357,7 +4357,9 @@
 						flags[cfg.flag]["mode"] = cfg.mode
 						flags[cfg.flag]["key"] = cfg.key
 
-						key_text.Text = string.upper(_text2 or "none")cfg.callback(cfg.active or false)
+						key_text.Text = string.upper(_text2 or "NONE")
+
+						cfg.callback(cfg.active or false)
 					elseif find({"toggle", "hold", "always"}, input) then
 						cfg.set_mode(input)
 
@@ -4369,8 +4371,8 @@
 					elseif type(input) == "table" then
 						input.key = type(input.key) == "string" and input.key ~= "none" and library:convert_enum(input.key) or input.key
 
-						input.key = input.key == Enum.KeyCode.Escape and "none" or input.key
-						cfg.key = input.key or "none"
+						input.key = input.key == Enum.KeyCode.Escape and "NONE" or input.key
+						cfg.key = input.key or "NONE"
 
 						cfg.mode = input.mode or "toggle"
 
@@ -4381,7 +4383,7 @@
 						local text = tostring(cfg.key) ~= "Enums" and (keys[cfg.key] or tostring(cfg.key):gsub("Enum.", "")) or nil
 						local __text = text and (tostring(text):gsub("KeyCode.", ""):gsub("UserInputType.", ""))
 
-						key_text.Text = string.upper(__text or "none")
+						key_text.Text = string.upper(__text or "NONE")
 						cfg.key_name = __text
 					end
 
@@ -4406,7 +4408,7 @@
 						local __text = text and (tostring(text):gsub("KeyCode.", ""):gsub("UserInputType.", ""))
 
 						if cfg.name then
-							KEYBIND_ELEMENT.Text = "[ " .. string.upper(string.sub(cfg.mode, 1, 1)) .. string.sub(cfg.mode, 2) .. " ] " .. cfg.name .. " - " .. string.upper(__text or "none")
+							KEYBIND_ELEMENT.Text = "[ " .. string.upper(string.sub(cfg.mode, 1, 1)) .. string.sub(cfg.mode, 2) .. " ] " .. cfg.name .. " - " .. string.upper(__text or "NONE")
 						end
 					end
 				end
@@ -4437,7 +4439,7 @@
 
 				element_outline.MouseButton1Down:Connect(function()
 					task.wait()
-					key_text.Text = "none"
+					key_text.Text = "NONE"
 
 					if cfg.binding then return end
 
