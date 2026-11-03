@@ -161,7 +161,7 @@
 		[Enum.KeyCode.RightControl] = "RC",
 		[Enum.KeyCode.Insert] = "INS",
 		[Enum.KeyCode.Backspace] = "BS",
-		[Enum.KeyCode.Return] = "Ent",
+		[Enum.KeyCode.Return] = "ENT",
 		[Enum.KeyCode.LeftAlt] = "LA",
 		[Enum.KeyCode.RightAlt] = "RA",
 		[Enum.KeyCode.CapsLock] = "CAPS",
@@ -4357,9 +4357,7 @@
 						flags[cfg.flag]["mode"] = cfg.mode
 						flags[cfg.flag]["key"] = cfg.key
 
-						key_text.Text = string.lower(_text2)
-
-						cfg.callback(cfg.active or false)
+						key_text.Text = string.upper(_text2 or "none")cfg.callback(cfg.active or false)
 					elseif find({"toggle", "hold", "always"}, input) then
 						cfg.set_mode(input)
 
@@ -4383,7 +4381,7 @@
 						local text = tostring(cfg.key) ~= "Enums" and (keys[cfg.key] or tostring(cfg.key):gsub("Enum.", "")) or nil
 						local __text = text and (tostring(text):gsub("KeyCode.", ""):gsub("UserInputType.", ""))
 
-						key_text.Text = string.lower(__text) or "none"
+						key_text.Text = string.upper(__text or "none")
 						cfg.key_name = __text
 					end
 
@@ -4408,7 +4406,7 @@
 						local __text = text and (tostring(text):gsub("KeyCode.", ""):gsub("UserInputType.", ""))
 
 						if cfg.name then
-							KEYBIND_ELEMENT.Text = "[ " .. string.upper(string.sub(cfg.mode, 1, 1)) .. string.sub(cfg.mode, 2) .. " ] " .. cfg.name .. " - " .. __text
+							KEYBIND_ELEMENT.Text = "[ " .. string.upper(string.sub(cfg.mode, 1, 1)) .. string.sub(cfg.mode, 2) .. " ] " .. cfg.name .. " - " .. string.upper(__text or "none")
 						end
 					end
 				end
