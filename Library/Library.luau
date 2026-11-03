@@ -4351,7 +4351,7 @@
 						cfg.key = input or "NONE"
 
 						local _text = keys[cfg.key] or tostring(cfg.key):gsub("Enum.", "")
-						local _text2 = (tostring(_text):gsub("KeyCode.", ""):gsub("UserInputType.", "")) or "none"
+						local _text2 = (tostring(_text):gsub("KeyCode.", ""):gsub("UserInputType.", "")) or "NONE"
 						cfg.key_name = _text2
 
 						flags[cfg.flag]["mode"] = cfg.mode
@@ -4369,7 +4369,7 @@
 
 						cfg.callback(cfg.active or false)
 					elseif type(input) == "table" then
-						input.key = type(input.key) == "string" and input.key ~= "none" and library:convert_enum(input.key) or input.key
+						input.key = type(input.key) == "string" and input.key ~= "" and library:convert_enum(input.key) or input.key
 
 						input.key = input.key == Enum.KeyCode.Escape and "NONE" or input.key
 						cfg.key = input.key or "NONE"
