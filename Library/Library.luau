@@ -2584,16 +2584,40 @@ local config_holder
 			library:create("UIListLayout", {
 				Parent = section_holder,
 				FillDirection = Enum.FillDirection.Horizontal,
-				HorizontalFlex = Enum.UIFlexAlignment.None,
+				HorizontalFlex = Enum.UIFlexAlignment.Fill,
 				Padding = dim(0, 2),
 				SortOrder = Enum.SortOrder.LayoutOrder
 			})
 
-			local column_names = options.columns == 1 and {"full"} or {"left", "center", "right"}
+			local column_names
+			if type(options.columns) == "table" then
+				column_names = options.columns
+			else
+				local count = tonumber(options.columns) or 3
+				count = math.max(1, math.floor(count))
+
+				if count == 1 then
+					column_names = {"full"}
+				elseif count == 2 then
+					column_names = {"left", "right"}
+				elseif count == 3 then
+					column_names = {"left", "center", "right"}
+				else
+					column_names = {}
+					for i = 1, count do
+						column_names[i] = "col" .. i
+					end
+					column_names.left = "col1"
+					column_names.center = "col" .. math.ceil(count / 2)
+					column_names.right = "col" .. count
+					column_names.full = "col1"
+				end
+			end
+
 			local column_width = 1 / #column_names
 			local tab_columns = {}
 
-			for _, column_name in next, column_names do
+			for idx, column_name in ipairs(column_names) do
 				local column_frame = library:create("Frame", {
 					Parent = section_holder,
 					Name = column_name,
@@ -2670,12 +2694,23 @@ local config_holder
 	function library:column(path)
 		if self.is_tab then
 			if type(path) == "string" then
-				return self.columns[path] or self.columns[self.column_order[1]]
+				local col = self.columns[path]
+				if col then return col end
+				return self.columns[self.column_order[1]]
+			end
+
+			if type(path) == "number" then
+				local name = self.column_order[path]
+				if name then return self.columns[name] end
+				return self.columns[self.column_order[#self.column_order]]
 			end
 
 			self.column_index = self.column_index + 1
+			if self.column_index > #self.column_order then
+				self.column_index = 1
+			end
 
-			return self.columns[self.column_order[min(self.column_index, #self.column_order)]]
+			return self.columns[self.column_order[self.column_index]]
 		end
 
 
