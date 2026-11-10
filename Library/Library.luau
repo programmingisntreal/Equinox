@@ -63,7 +63,7 @@ local remove = table.remove
 local concat = table.concat
 
 local library = {
-	directory = "Moo",
+	directory = "Flu",
 	folders = {
 		"/fonts",
 		"/configs",
@@ -98,13 +98,13 @@ local config_flags = library.config_flags
 
 local themes = {
 	preset = {
-		["outline"] = hex("#FFFFFF"),
-		["inline"] = hex("#F0F0F0"),
-		["accent"] = hex("#000000"),
-		["high_contrast"] = hex("#FFFFFF"),
-		["low_contrast"] = hex("#F5F5F5"),
-		["text"] = hex("#1A1A1A"),
-		["text_outline"] = rgb(255, 255, 255),
+		["outline"] = hex("#000000"),
+		["inline"] = hex("#141414"),
+		["accent"] = hex("#FFFFFF"),
+		["high_contrast"] = hex("#0A0A0A"),
+		["low_contrast"] = hex("#111111"),
+		["text"] = hex("#B4B4B4"),
+		["text_outline"] = rgb(0, 0, 0),
 		["glow"] = hex("#FFFFFF"),
 	},
 
@@ -248,7 +248,7 @@ local config_holder
 
 		hover.MouseEnter:Connect(function()
 			library:tween(hover_instance, {
-				BackgroundTransparency = 0.8,
+				BackgroundTransparency = 0,
 			})
 		end)
 
@@ -589,7 +589,7 @@ local config_holder
 			local UIGradient = library:create("UIGradient", {
 				Parent = watermark_background,
 				Name = "",
-				Color = rgbseq{rgbkey(0, rgb(255, 255, 255)), rgbkey(1, rgb(245, 245, 245))}
+				Color = rgbseq{rgbkey(0, rgb(16, 16, 16)), rgbkey(1, rgb(7, 7, 7))}
 			}); library:apply_theme(UIGradient, "contrast", "Color")
 
 			local text = library:create("TextLabel", {
@@ -694,8 +694,8 @@ local config_holder
 					Name = "",
 					Rotation = 90,
 					Color = rgbseq{
-					rgbkey(0, rgb(255, 255, 255)),
-					rgbkey(1, rgb(245, 245, 245))
+					rgbkey(0, rgb(16, 16, 16)),
+					rgbkey(1, rgb(7, 7, 7))
 				}
 				})
 
@@ -770,8 +770,8 @@ local config_holder
 					Name = "",
 					Rotation = 90,
 					Color = rgbseq{
-						rgbkey(0, rgb(255, 255, 255)),
-						rgbkey(1, rgb(245, 245, 245))
+						rgbkey(0, rgb(16, 16, 16)),
+						rgbkey(1, rgb(7, 7, 7))
 					}
 				})
 
@@ -1235,8 +1235,8 @@ local config_holder
 				Enabled = true,
 				Rotation = 90,
 				Color = rgbseq{
-					rgbkey(0, rgb(0, 0, 0)),
-					rgbkey(1, rgb(50, 50, 50))
+					rgbkey(0, rgb(255, 255, 255)),
+					rgbkey(1, rgb(167, 167, 167))
 				}
 			})
 
@@ -1325,7 +1325,7 @@ local config_holder
 			local window_size = dim2(0, 755, 0, 555)
 			local window_position = (properties and properties.position) or dim2(0, (camera.ViewportSize.X / 2) - (window_size.X.Offset / 2), 0, (camera.ViewportSize.Y / 2) - (window_size.Y.Offset / 2))
 			local main_window = library:panel({
-				name = properties and properties.name or "Moo | ",
+				name = properties and properties.name or "Flu | ",
 				size = window_size,
 				position = window_position,
 				image = "rbxassetid://98823308062942",
@@ -1412,8 +1412,8 @@ local config_holder
 				Parent = background,
 				Rotation = 90,
 				Color = rgbseq{
-					rgbkey(0, rgb(255, 255, 255)),
-					rgbkey(1, rgb(245, 245, 245))
+					rgbkey(0, rgb(16, 16, 16)),
+					rgbkey(1, rgb(7, 7, 7))
 				}
 			})
 
@@ -1514,10 +1514,10 @@ local config_holder
 			end)
 
 			window.watermark = library:watermark({
-				text = "Moo",
+				text = "Flu",
 				interval = 0.2,
 				update = function()
-					return ("Moo | %s fps | %s ms | %s | %s"):format(
+					return ("Flu | %s fps | %s ms | %s | %s"):format(
 						math.floor(watermark_fps),
 						math.floor(stats.Network.ServerStatsItem['Data Ping']:GetValue()),
 						time_string(),
@@ -1770,7 +1770,7 @@ local config_holder
 
 	function library:watermark(options)
 		local cfg = {
-			default = options.text or options.default or os.date('Moo | %b %d %Y | %H:%M'),
+			default = options.text or options.default or os.date('Flu | %b %d %Y | %H:%M'),
 			visible = options.visible ~= false,
 			interval = options.interval or 1,
 			update = options.update,
@@ -1787,167 +1787,167 @@ local config_holder
 			AutomaticSize = Enum.AutomaticSize.X,
 			BackgroundColor3 = themes.preset.outline
 		}) library:apply_theme(watermark_outline, "outline", "BackgroundColor3")
-		watermark_outline.Position = dim_offset(watermark_outline.AbsolutePosition.X, watermark_outline.AbsolutePosition.Y)
-		library:draggify(watermark_outline)
+			watermark_outline.Position = dim_offset(watermark_outline.AbsolutePosition.X, watermark_outline.AbsolutePosition.Y)
+			library:draggify(watermark_outline)
 
-		local watermark_inline = library:create("Frame", {
-			Parent = watermark_outline,
-			Name = "",
-			Position = dim2(0, 1, 0, 1),
-			BorderColor3 = rgb(0, 0, 0),
-			Size = dim2(1, -2, 1, -2),
-			BorderSizePixel = 0,
-			BackgroundColor3 = themes.preset.inline
-		}) library:apply_theme(watermark_inline, "inline", "BackgroundColor3")
+			local watermark_inline = library:create("Frame", {
+				Parent = watermark_outline,
+				Name = "",
+				Position = dim2(0, 1, 0, 1),
+				BorderColor3 = rgb(0, 0, 0),
+				Size = dim2(1, -2, 1, -2),
+				BorderSizePixel = 0,
+				BackgroundColor3 = themes.preset.inline
+			}) library:apply_theme(watermark_inline, "inline", "BackgroundColor3")
 
-		local watermark_background = library:create("Frame", {
-			Parent = watermark_inline,
-			Name = "",
-			Position = dim2(0, 1, 0, 1),
-			BorderColor3 = rgb(0, 0, 0),
-			Size = dim2(1, -2, 1, -2),
-			BorderSizePixel = 0,
-			BackgroundColor3 = rgb(255, 255, 255)
-		})
+			local watermark_background = library:create("Frame", {
+				Parent = watermark_inline,
+				Name = "",
+				Position = dim2(0, 1, 0, 1),
+				BorderColor3 = rgb(0, 0, 0),
+				Size = dim2(1, -2, 1, -2),
+				BorderSizePixel = 0,
+				BackgroundColor3 = rgb(255, 255, 255)
+			})
 
-		local UIGradient = library:create("UIGradient", {
-			Parent = watermark_background,
-			Name = "",
-			Rotation = 90,
-			Color = rgbseq{
-				rgbkey(0, rgb(255, 255, 255)),
-				rgbkey(1, rgb(245, 245, 245))
-			}
-		}) library:apply_theme(UIGradient, "contrast", "Color")
+			local UIGradient = library:create("UIGradient", {
+				Parent = watermark_background,
+				Name = "",
+				Rotation = 90,
+				Color = rgbseq{
+					rgbkey(0, rgb(16, 16, 16)),
+					rgbkey(1, rgb(7, 7, 7))
+				}
+			}) library:apply_theme(UIGradient, "contrast", "Color")
 
-		local text = library:create("TextLabel", {
-			Parent = watermark_background,
-			Name = "",
-			FontFace = library.font,
-			TextColor3 = themes.preset.text,
-			BorderColor3 = rgb(0, 0, 0),
-			Text = "  Moo | Beta | Aug 29 2024 | 07:29:00  ",
-			Size = dim2(0, 0, 1, 0),
-			BackgroundTransparency = 1,
-			Position = dim2(0, -1, 0, 1),
-			BorderSizePixel = 0,
-			AutomaticSize = Enum.AutomaticSize.X,
-			TextSize = 12,
-			BackgroundColor3 = rgb(255, 255, 255)
-		})
+			local text = library:create("TextLabel", {
+				Parent = watermark_background,
+				Name = "",
+				FontFace = library.font,
+				TextColor3 = themes.preset.text,
+				BorderColor3 = rgb(0, 0, 0),
+				Text = "  Flu | Beta | Aug 29 2024 | 07:29:00  ",
+				Size = dim2(0, 0, 1, 0),
+				BackgroundTransparency = 1,
+				Position = dim2(0, -1, 0, 1),
+				BorderSizePixel = 0,
+				AutomaticSize = Enum.AutomaticSize.X,
+				TextSize = 12,
+				BackgroundColor3 = rgb(255, 255, 255)
+			})
 
-		library:create("UIStroke", {
-			Parent = text,
-			Name = "",
-			LineJoinMode = Enum.LineJoinMode.Miter
-		})
+			library:create("UIStroke", {
+				Parent = text,
+				Name = "",
+				LineJoinMode = Enum.LineJoinMode.Miter
+			})
 
-		local accent = library:create("Frame", {
-			Parent = watermark_outline,
-			Name = "",
-			Position = dim2(0, 2, 0, 2),
-			BorderColor3 = rgb(0, 0, 0),
-			Size = dim2(1, -4, 0, 2),
-			BorderSizePixel = 0,
-			BackgroundColor3 = themes.preset.accent
-		}) library:apply_theme(accent, "accent", "BackgroundColor3")
+			local accent = library:create("Frame", {
+				Parent = watermark_outline,
+				Name = "",
+				Position = dim2(0, 2, 0, 2),
+				BorderColor3 = rgb(0, 0, 0),
+				Size = dim2(1, -4, 0, 2),
+				BorderSizePixel = 0,
+				BackgroundColor3 = themes.preset.accent
+			}) library:apply_theme(accent, "accent", "BackgroundColor3")
 
-		local UIGradient = library:create("UIGradient", {
-			Parent = accent,
-			Name = "",
-			Rotation = 90,
-			Color = rgbseq{
-				rgbkey(0, rgb(0, 0, 0)),
-				rgbkey(1, rgb(50, 50, 50))
-			}
-		})
+			local UIGradient = library:create("UIGradient", {
+				Parent = accent,
+				Name = "",
+				Rotation = 90,
+				Color = rgbseq{
+					rgbkey(0, rgb(255, 255, 255)),
+					rgbkey(1, rgb(167, 167, 167))
+				}
+			})
 
-		local updating = false
+			local updating = false
 
-		local function stop_update()
-			updating = false
-		end
-
-		local function start_update()
-			if updating then
-				return
+			local function stop_update()
+				updating = false
 			end
 
-			updating = true
+			local function start_update()
+				if updating then
+					return
+				end
 
-			task.spawn(function()
-				while updating do
-					local interval = cfg.interval or 1
+				updating = true
 
-					task.wait(interval > 0 and interval or 0.1)
+				task.spawn(function()
+					while updating do
+						local interval = cfg.interval or 1
 
-					if updating and cfg.update then
-						local success, value = pcall(cfg.update)
+						task.wait(interval > 0 and interval or 0.1)
 
-						if success and type(value) == "string" then
-							cfg.change_text(value)
+						if updating and cfg.update then
+							local success, value = pcall(cfg.update)
+
+							if success and type(value) == "string" then
+								cfg.change_text(value)
+							end
 						end
 					end
+				end)
+			end
+
+			function cfg.change_text(input)
+				text.Text = "  ".. input .."  "
+			end
+
+			cfg.set_text = cfg.change_text
+
+			function cfg.set_visible(bool)
+				watermark_outline.Visible = bool
+			end
+
+			function cfg.configure(options)
+				options = options or {}
+
+				if options.text ~= nil then
+					cfg.default = options.text
+					cfg.change_text(options.text)
 				end
-			end)
-		end
 
-		function cfg.change_text(input)
-			text.Text = "  ".. input .."  "
-		end
+				if options.visible ~= nil then
+					cfg.set_visible(options.visible)
+				end
 
-		cfg.set_text = cfg.change_text
+				if options.position ~= nil then
+					watermark_outline.Position = options.position
+				end
 
-		function cfg.set_visible(bool)
-			watermark_outline.Visible = bool
-		end
+				if options.anchor_point ~= nil then
+					watermark_outline.AnchorPoint = options.anchor_point
+				end
 
-		function cfg.configure(options)
-			options = options or {}
+				if options.update ~= nil then
+					cfg.update = options.update ~= false and options.update or nil
+				end
 
-			if options.text ~= nil then
-				cfg.default = options.text
-				cfg.change_text(options.text)
+				if options.interval ~= nil then
+					cfg.interval = options.interval
+				end
+
+				if cfg.update and (cfg.interval or 0) > 0 then
+					start_update()
+				else
+					stop_update()
+				end
+
+				return cfg
 			end
 
-			if options.visible ~= nil then
-				cfg.set_visible(options.visible)
-			end
-
-			if options.position ~= nil then
-				watermark_outline.Position = options.position
-			end
-
-			if options.anchor_point ~= nil then
-				watermark_outline.AnchorPoint = options.anchor_point
-			end
-
-			if options.update ~= nil then
-				cfg.update = options.update ~= false and options.update or nil
-			end
-
-			if options.interval ~= nil then
-				cfg.interval = options.interval
-			end
+			cfg.change_text(cfg.default)
+			cfg.set_visible(cfg.visible)
 
 			if cfg.update and (cfg.interval or 0) > 0 then
 				start_update()
-			else
-				stop_update()
 			end
 
 			return cfg
 		end
-
-		cfg.change_text(cfg.default)
-		cfg.set_visible(cfg.visible)
-
-		if cfg.update and (cfg.interval or 0) > 0 then
-			start_update()
-		end
-
-		return cfg
-	end
 
 	function library:esp_preview(properties)
 		local cfg = {items = {}, rotation = 0; objects = {};}
@@ -2443,8 +2443,8 @@ local config_holder
 				Name = "",
 				Rotation = 90,
 				Color = ColorSequence.new{
-					rgbkey(0, rgb(0, 0, 0)),
-					rgbkey(1, rgb(50, 50, 50))
+					rgbkey(0, rgb(255, 255, 255)),
+					rgbkey(1, rgb(167, 167, 167))
 				}
 			})
 
@@ -2463,8 +2463,8 @@ local config_holder
 				Name = "",
 				Rotation = 90,
 				Color = ColorSequence.new{
-					rgbkey(0, rgb(0, 0, 0)),
-					rgbkey(1, rgb(50, 50, 50))
+					rgbkey(0, rgb(255, 255, 255)),
+					rgbkey(1, rgb(167, 167, 167))
 				}
 			})
 
@@ -2548,7 +2548,7 @@ local config_holder
 			local UIGradient = library:create("UIGradient", {
 				Parent = background,
 				Rotation = 90,
-				Color = rgbseq{rgbkey(0, rgb(255, 255, 255)), rgbkey(1, rgb(245, 245, 245))}
+				Color = rgbseq{rgbkey(0, rgb(16, 16, 16)), rgbkey(1, rgb(7, 7, 7))}
 			}) library:apply_theme(UIGradient, "contrast", "Color")
 
 			local text = library:create("TextLabel", {
@@ -2584,44 +2584,20 @@ local config_holder
 			library:create("UIListLayout", {
 				Parent = section_holder,
 				FillDirection = Enum.FillDirection.Horizontal,
-				HorizontalFlex = Enum.UIFlexAlignment.Fill,
+				HorizontalFlex = Enum.UIFlexAlignment.None,
 				Padding = dim(0, 2),
 				SortOrder = Enum.SortOrder.LayoutOrder
 			})
 
-			local column_names
-			if type(options.columns) == "table" then
-				column_names = options.columns
-			else
-				local count = tonumber(options.columns) or 3
-				count = math.max(1, math.floor(count))
-
-				if count == 1 then
-					column_names = {"full"}
-				elseif count == 2 then
-					column_names = {"left", "right"}
-				elseif count == 3 then
-					column_names = {"left", "center", "right"}
-				else
-					column_names = {}
-					for i = 1, count do
-						column_names[i] = "col" .. i
-					end
-					column_names.left = "col1"
-					column_names.center = "col" .. math.ceil(count / 2)
-					column_names.right = "col" .. count
-					column_names.full = "col1"
-				end
-			end
-
+			local column_names = options.columns == 1 and {"full"} or {"left", "center", "right"}
 			local column_width = 1 / #column_names
 			local tab_columns = {}
 
-			for idx, column_name in ipairs(column_names) do
+			for _, column_name in next, column_names do
 				local column_frame = library:create("Frame", {
 					Parent = section_holder,
 					Name = column_name,
-					BackgroundTransparency = 1,
+						BackgroundTransparency = 1,
 					BorderColor3 = rgb(0, 0, 0),
 					Size = dim2(column_width, -3, 1, 0),
 					BorderSizePixel = 0,
@@ -2694,23 +2670,12 @@ local config_holder
 	function library:column(path)
 		if self.is_tab then
 			if type(path) == "string" then
-				local col = self.columns[path]
-				if col then return col end
-				return self.columns[self.column_order[1]]
-			end
-
-			if type(path) == "number" then
-				local name = self.column_order[path]
-				if name then return self.columns[name] end
-				return self.columns[self.column_order[#self.column_order]]
+				return self.columns[path] or self.columns[self.column_order[1]]
 			end
 
 			self.column_index = self.column_index + 1
-			if self.column_index > #self.column_order then
-				self.column_index = 1
-			end
 
-			return self.columns[self.column_order[self.column_index]]
+			return self.columns[self.column_order[min(self.column_index, #self.column_order)]]
 		end
 
 
@@ -2798,14 +2763,14 @@ local config_holder
 			Parent = accent,
 			Name = "",
 			Rotation = 90,
-			Color = rgbseq{rgbkey(0, rgb(0, 0, 0)), rgbkey(1, rgb(50, 50, 50))}
+			Color = rgbseq{rgbkey(0, rgb(255, 255, 255)), rgbkey(1, rgb(167, 167, 167))}
 		})
 
 		local UIGradient = library:create("UIGradient", {
 			Parent = __background,
 			Name = "",
 			Rotation = 90,
-			Color = rgbseq{rgbkey(0, rgb(255, 255, 255)), rgbkey(1, rgb(245, 245, 245))}
+			Color = rgbseq{rgbkey(0, rgb(16, 16, 16)), rgbkey(1, rgb(7, 7, 7))}
 		}) library:apply_theme(UIGradient, "contrast", "Color")
 
 		local tab_holder = library:create("Frame", {
@@ -2864,7 +2829,7 @@ local config_holder
 					Parent = background,
 					Name = "",
 					Rotation = 90,
-					Color = rgbseq{rgbkey(0, rgb(255, 255, 255)), rgbkey(1, rgb(245, 245, 245))}
+					Color = rgbseq{rgbkey(0, rgb(16, 16, 16)), rgbkey(1, rgb(7, 7, 7))}
 				}) library:apply_theme(UIGradient, "contrast", "Color")
 
 				local text = library:create("TextLabel", {
@@ -3030,8 +2995,8 @@ local config_holder
 			Parent = accent,
 			Rotation = 90,
 			Color = rgbseq{
-				rgbkey(0, rgb(0, 0, 0)),
-				rgbkey(1, rgb(50, 50, 50))
+				rgbkey(0, rgb(255, 255, 255)),
+				rgbkey(1, rgb(167, 167, 167))
 			}
 		})
 
@@ -3039,8 +3004,8 @@ local config_holder
 			Parent = background,
 			Rotation = 90,
 			Color = rgbseq{
-				rgbkey(0, rgb(255, 255, 255)),
-				rgbkey(1, rgb(245, 245, 245))
+				rgbkey(0, rgb(16, 16, 16)),
+				rgbkey(1, rgb(7, 7, 7))
 			}
 		}) library:apply_theme(UIGradient, "contrast", "Color")
 
@@ -3252,8 +3217,8 @@ local config_holder
 				Parent = fill,
 				Rotation = 90,
 				Color = rgbseq{
-					rgbkey(0, rgb(0, 0, 0)),
-					rgbkey(1, rgb(50, 50, 50))
+					rgbkey(0, rgb(255, 255, 255)),
+					rgbkey(1, rgb(167, 167, 167))
 				}
 			})
 
@@ -3261,8 +3226,8 @@ local config_holder
 				Parent = contrast,
 				Rotation = 90,
 				Color = rgbseq{
-					rgbkey(0, rgb(255, 255, 255)),
-					rgbkey(1, rgb(245, 245, 245))
+					rgbkey(0, rgb(16, 16, 16)),
+					rgbkey(1, rgb(7, 7, 7))
 				}
 			}); library:apply_theme(UIGradient, "contrast", "Color")
 
@@ -3270,8 +3235,8 @@ local config_holder
 				Parent = background,
 				Rotation = 90,
 				Color = rgbseq{
-					rgbkey(0, rgb(0, 0, 0)),
-					rgbkey(1, rgb(50, 50, 50))
+					rgbkey(0, rgb(255, 255, 255)),
+					rgbkey(1, rgb(167, 167, 167))
 				}
 			})
 
@@ -3474,8 +3439,8 @@ local config_holder
 				Parent = accent,
 				Rotation = 90,
 				Color = rgbseq{
-					rgbkey(0, rgb(0, 0, 0)),
-					rgbkey(1, rgb(50, 50, 50))
+					rgbkey(0, rgb(255, 255, 255)),
+					rgbkey(1, rgb(167, 167, 167))
 				}
 			})
 
@@ -3496,8 +3461,8 @@ local config_holder
 				Rotation = 90,
 				Name = "_",
 				Color = rgbseq{
-					rgbkey(0, rgb(255, 255, 255)),
-					rgbkey(1, rgb(245, 245, 245))
+					rgbkey(0, rgb(16, 16, 16)),
+					rgbkey(1, rgb(7, 7, 7))
 				}
 			}) library:apply_theme(UIGradient, "contrast", "Color")
 
@@ -3642,8 +3607,8 @@ local config_holder
 				Rotation = 90,
 				Name = "_",
 				Color = rgbseq{
-				rgbkey(0, rgb(255, 255, 255)),
-				rgbkey(1, rgb(245, 245, 245))
+				rgbkey(0, rgb(16, 16, 16)),
+				rgbkey(1, rgb(7, 7, 7))
 			}
 			}) library:apply_theme(UIGradient, "contrast", "Color")
 
@@ -3742,8 +3707,8 @@ local config_holder
 				Rotation = 90,
 				Name = "_",
 				Color = rgbseq{
-					rgbkey(0, rgb(255, 255, 255)),
-					rgbkey(1, rgb(245, 245, 245))
+					rgbkey(0, rgb(16, 16, 16)),
+					rgbkey(1, rgb(7, 7, 7))
 				}
 			}) library:apply_theme(UIGradient, "contrast", "Color")
 
@@ -4206,8 +4171,8 @@ local config_holder
 			Name = "",
 			Rotation = 90,
 			Color = rgbseq{
-				rgbkey(0, rgb(255, 255, 255)),
-				rgbkey(1, rgb(245, 245, 245))
+				rgbkey(0, rgb(16, 16, 16)),
+				rgbkey(1, rgb(7, 7, 7))
 			}
 		}); library:apply_theme(UIGradient, "contrast", "Color")
 
@@ -4330,8 +4295,8 @@ local config_holder
 				Name = "",
 				Rotation = 90,
 				Color = rgbseq{
-					rgbkey(0, rgb(255, 255, 255)),
-					rgbkey(1, rgb(245, 245, 245))
+					rgbkey(0, rgb(16, 16, 16)),
+					rgbkey(1, rgb(7, 7, 7))
 				}
 			}); library:apply_theme(UIGradient, "contrast", "Color")
 
@@ -4733,8 +4698,8 @@ local config_holder
 				Parent = contrast,
 				Rotation = 90,
 				Color = rgbseq{
-					rgbkey(0, rgb(255, 255, 255)),
-					rgbkey(1, rgb(245, 245, 245))
+					rgbkey(0, rgb(16, 16, 16)),
+					rgbkey(1, rgb(7, 7, 7))
 				}
 			}) library:apply_theme(UIGradient, "contrast", "Color")
 
@@ -4742,8 +4707,8 @@ local config_holder
 				Parent = background,
 				Rotation = 90,
 				Color = rgbseq{
-					rgbkey(0, rgb(0, 0, 0)),
-					rgbkey(1, rgb(50, 50, 50))
+					rgbkey(0, rgb(255, 255, 255)),
+					rgbkey(1, rgb(167, 167, 167))
 				}
 			}) library:apply_theme(UIGradient, "contrast", "Color")
 
@@ -4838,8 +4803,8 @@ local config_holder
 				Parent = contrast,
 				Rotation = 90,
 				Color = rgbseq{
-					rgbkey(0, rgb(255, 255, 255)),
-					rgbkey(1, rgb(245, 245, 245))
+					rgbkey(0, rgb(16, 16, 16)),
+					rgbkey(1, rgb(7, 7, 7))
 				}
 			}) library:apply_theme(UIGradient, "contrast", "Color")
 
@@ -4853,8 +4818,8 @@ local config_holder
 				Parent = background,
 				Rotation = 90,
 				Color = rgbseq{
-					rgbkey(0, rgb(0, 0, 0)),
-					rgbkey(1, rgb(50, 50, 50))
+					rgbkey(0, rgb(255, 255, 255)),
+					rgbkey(1, rgb(167, 167, 167))
 				}
 			}) library:apply_theme(UIGradient, "contrast", "Color")
 
@@ -5078,8 +5043,8 @@ local config_holder
 				Name = "",
 				Rotation = 90,
 				Color = rgbseq{
-				rgbkey(0, rgb(0, 0, 0)),
-				rgbkey(1, rgb(50, 50, 50))
+				rgbkey(0, rgb(255, 255, 255)),
+				rgbkey(1, rgb(167, 167, 167))
 			}
 			}) library:apply_theme(UIGradient, "contrast", "Color")
 
@@ -5097,8 +5062,8 @@ local config_holder
 				Name = "",
 				Rotation = 90,
 				Color = rgbseq{
-				rgbkey(0, rgb(255, 255, 255)),
-				rgbkey(1, rgb(245, 245, 245))
+				rgbkey(0, rgb(16, 16, 16)),
+				rgbkey(1, rgb(7, 7, 7))
 			}
 			}) library:apply_theme(UIGradient, "contrast", "Color")
 
@@ -5347,8 +5312,8 @@ local config_holder
 				Name = "",
 				Rotation = 90,
 				Color = rgbseq{
-					rgbkey(0, rgb(255, 255, 255)),
-					rgbkey(1, rgb(245, 245, 245))
+					rgbkey(0, rgb(16, 16, 16)),
+					rgbkey(1, rgb(7, 7, 7))
 				}
 			})
 
@@ -5493,8 +5458,8 @@ local config_holder
 			Name = "",
 			Rotation = 90,
 			Color = rgbseq{
-				rgbkey(0, rgb(0, 0, 0)),
-				rgbkey(1, rgb(50, 50, 50))
+				rgbkey(0, rgb(255, 255, 255)),
+				rgbkey(1, rgb(167, 167, 167))
 			}
 		})
 
@@ -5515,8 +5480,8 @@ local config_holder
 			Name = "",
 			Rotation = 90,
 			Color = rgbseq{
-				rgbkey(0, rgb(255, 255, 255)),
-				rgbkey(1, rgb(245, 245, 245))
+				rgbkey(0, rgb(16, 16, 16)),
+				rgbkey(1, rgb(7, 7, 7))
 			}
 		})
 
@@ -5738,8 +5703,8 @@ local config_holder
 				Name = "",
 				Rotation = 90,
 				Color = rgbseq{
-					rgbkey(0, rgb(0, 0, 0)),
-					rgbkey(1, rgb(50, 50, 50))
+					rgbkey(0, rgb(255, 255, 255)),
+					rgbkey(1, rgb(167, 167, 167))
 				}
 			}); library:apply_theme(UIGradient, "contrast", "Color")
 
@@ -5757,8 +5722,8 @@ local config_holder
 				Name = "",
 				Rotation = 90,
 				Color = rgbseq{
-				rgbkey(0, rgb(255, 255, 255)),
-				rgbkey(1, rgb(245, 245, 245))
+				rgbkey(0, rgb(16, 16, 16)),
+				rgbkey(1, rgb(7, 7, 7))
 			}
 			}); library:apply_theme(UIGradient, "contrast", "Color")
 
